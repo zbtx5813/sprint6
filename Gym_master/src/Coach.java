@@ -23,4 +23,17 @@ public class Coach {
     public String getMiddleName() {
         return middleName;
     }
+
+    public boolean equals (Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coach coach = (Coach) o;
+
+        return (surname.equals(coach.surname) && name.equals(coach.name) && middleName.equals(coach.middleName));
+    }
+
+    public int hashCode () {
+        return surname.hashCode() + name.hashCode() + middleName.hashCode();
+    }
 }
