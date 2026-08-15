@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -8,6 +9,7 @@ import java.util.TreeMap;
 
 public class TimetableTest {
     @Test
+    @DisplayName("Одна тренировка")
     void testGetTrainingSessionsForDaySingleSession() {
         Timetable timetable = new Timetable();
 
@@ -37,6 +39,7 @@ public class TimetableTest {
     }
 
     @Test
+    @DisplayName("Несколько тренировок")
     void testGetTrainingSessionsForDayMultipleSessions() {
         Timetable timetable = new Timetable();
 
@@ -95,6 +98,7 @@ public class TimetableTest {
     }
 
     @Test
+    @DisplayName("Тренировки на определённое время")
     void testGetTrainingSessionsForDayAndTime() {
         Timetable timetable = new Timetable();
 
@@ -117,6 +121,7 @@ public class TimetableTest {
     }
 
     @Test
+    @DisplayName("Подсчёт тренировок для каждого тренера")
     void testGetCountByCoaches() {
         Timetable timetable = new Timetable();
 

@@ -2,8 +2,9 @@ import java.util.*;
 
 public class Timetable {
     private HashMap<DayOfWeek, TreeMap<TimeOfDay, List<TrainingSession>>> timetable = new HashMap<>();
+    private HashMap<Coach, Integer> coachesCounter = new HashMap<>();
 
-    Comparator<TimeOfDay> timeOfDayComparator = new Comparator<TimeOfDay>() {
+    private Comparator<TimeOfDay> timeOfDayComparator = new Comparator<TimeOfDay>() {
         @Override
         public int compare(TimeOfDay o1, TimeOfDay o2) {
             if (o1.getHours() != o2.getHours()) {
@@ -34,6 +35,9 @@ public class Timetable {
         }
 
         sessionsAtTime.add(trainingSession);
+
+        Coach currentCoach = trainingSession.getCoach();
+        coachesCounter.put(currentCoach, coachesCounter.getOrDefault(currentCoach, 0) + 1);
     }
 
     public TreeMap<TimeOfDay, List<TrainingSession>> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
@@ -49,28 +53,19 @@ public class Timetable {
     }
 
     public List<CounterOfTrainings> getCountByCoaches() {
-        Map<Coach, Integer> coachWorkload = new HashMap<>();
-        for (TreeMap<TimeOfDay, List<TrainingSession>> daySchedule : timetable.values()) {
-            for (List<TrainingSession> sessions : daySchedule.values()) {
-                for (TrainingSession session : sessions) {
-                    Coach coach = session.getCoach();
-                    coachWorkload.put(coach, coachWorkload.getOrDefault(coach, 0) + 1);
-                }
-            }
+        List<CounterOfTrainings> counterOfTrainingsList = new ArrayList<CounterOfTrainings>();
+        for (Coach coach : coachesCounter.keySet()) {
+            CounterOfTrainings counterOfTrainings = new CounterOfTrainings(coach, coachesCounter.get(coach));
+            counterOfTrainingsList.add(counterOfTrainings);
         }
 
-        List<CounterOfTrainings> resultList = new ArrayList<>();
-        for (Map.Entry<Coach, Integer> entry : coachWorkload.entrySet()) {
-            resultList.add(new CounterOfTrainings(entry.getKey(), entry.getValue()));
-        }
-
-        resultList.sort(new Comparator<>() {
+        counterOfTrainingsList.sort(new Comparator<>() {
             @Override
             public int compare(CounterOfTrainings o1, CounterOfTrainings o2) {
                 return Integer.compare(o2.getCount(), o1.getCount());
             }
         });
 
-        return resultList;
+        return counterOfTrainingsList;
     }
 }

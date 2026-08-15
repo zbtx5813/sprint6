@@ -16,4 +16,17 @@ public class TimeOfDay {
     public int getMinutes() {
         return minutes;
     }
+
+    public boolean equals (Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TimeOfDay timeOfDay = (TimeOfDay) o;
+
+        return (hours == timeOfDay.hours && minutes == timeOfDay.minutes);
+    }
+
+    public int hashCode () {
+        return hours + minutes;
+    }
 }
